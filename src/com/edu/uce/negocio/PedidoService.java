@@ -4,6 +4,7 @@ public class PedidoService {
 
     private NotificadorMail notificadorMail = new NotificadorMail();;
     private NotificadorSms notificadorSms = new NotificadorSms();
+    private NotificadorWhatsApp notificadorWhatsApp = new NotificadorWhatsApp();
 
     public void registrar(Pedido pedido) {
         System.out.println("Registrando pedido");
@@ -13,7 +14,11 @@ public class PedidoService {
         System.out.println("Guardando en la base de datos");
         if (pedido.getTotal() < 0) {
             System.out.println("El pedido no puede ser registrado por tener un monto negativo");
-        } else if (pedido.getTotal() < 100) {
+        } else if (pedido.getTotal() < 50) {
+            notificadorWhatsApp.enviar(pedido.getCliente(),
+                    "Se ha creado un pedido para ser atendido por un monto de: "
+                            + "$" + pedido.getTotal());
+        } else if (pedido.getTotal() < 120) {
             notificadorSms.enviar(pedido.getCliente(),
                     "Se ha creado un pedido para ser atendido por un monto de: "
                             + "$" + pedido.getTotal());
